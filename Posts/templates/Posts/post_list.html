@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:id="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>My Posts</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css"
+        href="{% static 'css/bootstraptheme.min.css' %}"/>
+    <script src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js ' %}"></script>
+    <script src="{% static "js/functions.js" %}"></script>
+
+
+    <style>
+        .posts-container{
+            padding-left: 10%;
+        }
+
+        .added-date{
+            color: rgba(6, 7, 8, 0.40);
+        }
+
+        .pagination{
+            margin: auto;
+        }
+    </style>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/posts/view/">
+            <img alt="Brand" src="...">
+          </a>
+        </div>
+          {% if user.is_authenticated %}
+            <a href="/posts/logout/" class="btn btn-default pull-right">logout</a>
+          {% else %}
+              <a href="/posts/login/" class="btn btn-default pull-right">login</a>
+          {% endif %}
+      </div>
+
+    </nav>
+
+    <div class="page-header">
+
+{#        <div class="well" id = "post_submmitted_ack" style="text-align: center">#}
+{#            your new masterpiece is up for the world#}
+{#        </div>#}
+
+        {% if user.is_authenticated %}
+            <h1 class="col-sm-offset-1">Hello, {{ request.user.username }}</h1>
+        {% else %}
+            <h1 class="col-sm-offset-1">Hello!</h1>
+        {% endif %}
+        <h1 class="col-sm-offset-1">All Masterpieces At One Place <small>you care</small>
+         <button id="create_btn" class=" btn btn-primary">create</button>
+        </h1>
+
+         {% if is_paginated %}
+             <div class="col-sm-offset-10">
+                    <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-default">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-default">next</a>
+                    {% endif %}
+                </span>
+            </div>
+             </div>
+
+    {% endif %}
+
+    </div>
+
+    <div>
+    <div class="row">
+    {% for post in posts %}
+      <div class="posts-container col-sm-offset-1 col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3> {{ post.title }}</h3>
+            <p>{{ post.content|linebreaks|truncatechars:120 }}</p>
+              {%  if request.user.id  == post.author_id %}
+                    <p><a href="/posts/update/{{ post.id }}" class="update btn btn-primary" role="button">update</a>
+                {% endif %}
+            <a href="/posts/view/{{ post.id }}" class="view btn btn-primary" data-toggle="modal" data-target="#myModal" role="button">view</a></p>
+              <p class="added-date">{{ post.timestamp }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+     </div>
+
+
+
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
