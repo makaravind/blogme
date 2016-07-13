@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Posts',
-    'ckeditor'
+    'ckeditor',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [

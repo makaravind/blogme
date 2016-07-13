@@ -27,5 +27,9 @@ urlpatterns = [
      url(r'^delete/(?P<pk>[0-9]+)', view=views.Post_Delete.as_view(), name='post_delete'),
      url(r'^register', view=views.UserFormView.as_view(), name='register'),
      url(r'^login', view=views.UserLogin.as_view(), name='login'),
-     url(r'^logout', view=views.logout, name='logout')
+     url(r'^logout', view=views.logout, name='logout'),
+
+
+    # API
+    url(r'^api/view/(?P<author>[0-9]+)$', view=views.MyPostList, name='my_posts_list'),
 ]

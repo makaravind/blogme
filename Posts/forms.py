@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .models import Post, RichTextField
+from .models import Post
 from django import forms
 
 class UserForm(forms.ModelForm):

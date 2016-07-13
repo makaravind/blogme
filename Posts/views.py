@@ -7,12 +7,15 @@ from .models import Post
 from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 import json
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from .forms import UserForm, UserLoginForm, CreatePostForm
 
+from .serializers import Post_Serializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status, viewsets
 
 class Posts(ListView):
     model = Post
@@ -160,5 +163,12 @@ def UserLogout(request):
     return HttpResponseRedirect('login')
 
 
+# API
+@api_view(['GET'])
+def MyPostList(request, author):
+    if request.method == 'GET':
+        author_posts = Post.objects.all().filter(author=author)
+        serializer = Post_Serializer(author_posts, many=True)
+        return Response(serializer.data)
 
 
